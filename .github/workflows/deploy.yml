@@ -3,7 +3,7 @@ name: Deploy to FTP
 on:
   push:
     branches:
-      - main
+      - main  # Adjust the branch name as needed
 
 jobs:
   deploy:
@@ -16,27 +16,23 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20.18.3
+          node-version: 14.21.2  # Use the desired Node.js version
 
       - name: Install dependencies and build Next.js app
         run: |
-          yarn install
-          touch .env.local
-          echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env.local
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env.local
-          yarn build
+          yarn install  # Install project dependencies
+          yarn build    # Build Next.js app
 
-      - name: Prepare production bundle
-        run: |
-          mkdir deploy
-          cp -r .next public package.json next.config.js yarn.lock .env.local deploy/
-          cp -r node_modules deploy/node_modules
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./deploy/
-          server-dir: /nextjs-app
+        run: |
+          lftp -e "set ssl:verify-certificate no; \
+            mirror -R -e \
+            -x .git/ \
+            -x .github/ \
+            -x .next/ \
+            -x node_modules/ \
+            ./ /public_html/; bye" \
+            -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }}
