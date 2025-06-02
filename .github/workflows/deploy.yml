@@ -30,6 +30,7 @@ jobs:
         run: |
           mkdir deploy
           cp -r .next public package.json next.config.js yarn.lock .env.local deploy/
+          cp -r node_modules deploy/node_modules
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
