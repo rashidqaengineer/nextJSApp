@@ -3,7 +3,7 @@ name: Deploy to FTP
 on:
   push:
     branches:
-      - master  # or main, depending on your repo
+      - main  # or main, depending on your repo
 
 jobs:
   deploy:
