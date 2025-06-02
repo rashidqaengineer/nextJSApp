@@ -1,0 +1,38 @@
+name: Deploy to FTP
+
+on:
+  push:
+    branches:
+      - master  # or main, depending on your repo
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.18.3  # Node version supported by cPanel
+
+      - name: Install dependencies and build Next.js app
+        run: |
+          yarn install
+          touch .env.local
+          echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env.local
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env.local
+          yarn build
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./           # root folder
+          server-dir: /nextjs-app # must match App Root from cPanel
+          protocol: ftps
+          timeout: 300000

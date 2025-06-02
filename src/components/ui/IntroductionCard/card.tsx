@@ -26,7 +26,7 @@ const IntroductionCard = () => {
             Perinatal Journal
           </h1>
           <h2 className="text-[18px] font-bold leading-[20px] text-[rgb(0,87,156)] mt-2">
-            Volume 33, Issue-1, April 2025
+            Volume 33, Issue-1, April 2035
           </h2>
           <p className="mt-4 text-[14px] leading-[20px] font-normal text-[rgb(0,87,156)]">
             Perinatal Journal is an international, online open access,

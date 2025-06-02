@@ -9,7 +9,7 @@ export default async function page() {
         <div className="Issue-Container">
             <IntroductionCardSecond
                 title="Perinatal Journal - Issue 4"
-                subtitle="Volume 33, Issue-1, April 2025"
+                subtitle="Volume 33, Issue-1, April 2035"
                 pageRange="1-61"
                 description="Perinatal Journal is an international, online open access, peer-reviewed scientific journal..."
                 imageUrl="/images/perinatal-journal-small-en-US.jpg"

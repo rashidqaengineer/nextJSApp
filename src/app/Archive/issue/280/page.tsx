@@ -9,7 +9,7 @@ export default async function page() {
         <div className="Issue-Container">
             <IntroductionCardSecond
                 title="Perinatal Journal"
-                subtitle="Volume 33, Issue-1, April 2025"
+                subtitle="Volume 33, Issue-1, April 2035"
                 pageRange="1-61"
                 description="Perinatal Journal is an international, online open access, peer-reviewed scientific journal (e-ISSN: 1305-3124). The journal is the official publication of Perinatal Medicine Foundation. It is published three times a year in April, August and December. The publication language of the journal is English."
                 imageUrl="/images/perinatal-journal-small-en-US.jpg"
