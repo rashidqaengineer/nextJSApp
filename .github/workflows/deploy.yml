@@ -16,23 +16,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14.21.2  # Use the desired Node.js version
+          node-version: 20.18.3  # Use the desired Node.js version
 
       - name: Install dependencies and build Next.js app
         run: |
           yarn install  # Install project dependencies
-          yarn build    # Build Next.js app
-
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+          yarn build  # Build Next.js app
 
       - name: Deploy via FTP
         run: |
-          lftp -e "set ssl:verify-certificate no; \
-            mirror -R -e \
-            -x .git/ \
-            -x .github/ \
-            -x .next/ \
-            -x node_modules/ \
-            ./ /public_html/; bye" \
-            -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }}
+          lftp -e "open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }}; set ssl:verify-certificate no; mirror -R -e -x .git/ -x .github/ -x .next/ -x node_modules/./public_html/; bye"
