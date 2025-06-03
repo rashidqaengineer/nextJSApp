@@ -33,5 +33,7 @@ jobs:
             mirror -R -e \
               --exclude .git/ \
               --exclude .github/ \
+              --exclude node_modules/ \
+              --exclude .next/ \
               ./ /public_html/;
             bye"
