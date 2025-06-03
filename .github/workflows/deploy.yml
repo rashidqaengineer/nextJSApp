@@ -20,8 +20,8 @@ jobs:
 
       - name: Install dependencies and build Next.js app
         run: |
-          next install  # Install project dependencies
-          next build  # Build Next.js app
+          yarn install  # Install project dependencies
+          yarn build  # Build Next.js app
 
       - name: Deploy via FTP
         run: |
