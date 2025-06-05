@@ -197,6 +197,7 @@ export default function page() {
                   {/* <img src="/Content/img/scopus-banner.jpg"> */}
                   <Image src="/scopus-banner.jpg" alt="Scopus" width={300} height={100} />
                 </a>
+                hellow
               </div>
 
             </div>
