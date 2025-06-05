@@ -34,19 +34,22 @@ jobs:
             set net:timeout 30;
             open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }};
             
-            echo '=== Checking if target directory exists ==='
-            cd ${{ secrets.FTP_HOST }} || cd ${{ secrets.FTP_HOST }}/ || {
-              echo 'Cannot access ${{ secrets.FTP_HOST }}, trying alternatives'
-              pwd
-              ls -la
-              cd thepdtpz/techbiz || cd techbiz || exit 1
-            }
+            echo '=== Checking current directory and listing contents ===';
+            pwd;
+            ls -la;
             
-            echo '=== Current directory ==='
-            pwd
-            ls -la
+            echo '=== Attempting to navigate to target directory ===';
+            cd thepdtpz/techbiz || cd techbiz || cd /thepdtpz/techbiz || {
+              echo 'Cannot access target directory, staying in current directory';
+              echo 'Available directories:';
+              ls -la;
+            };
             
-            echo '=== Starting deployment ==='
+            echo '=== Current directory after navigation ===';
+            pwd;
+            ls -la;
+            
+            echo '=== Starting deployment ===';
             mirror -R -e -v -P 3 \
               --exclude .git/ \
               --exclude .github/ \
@@ -57,10 +60,10 @@ jobs:
               --exclude package-lock.json \
               ./ ./;
             
-            echo '=== Deployment completed, verifying files ==='
-            ls -la
-            echo '=== Checking .next directory ==='
-            ls -la .next/ || echo 'No .next directory found'
+            echo '=== Deployment completed, verifying files ===';
+            ls -la;
+            echo '=== Checking .next directory ===';
+            ls -la .next/ || echo 'No .next directory found';
             
-            bye
+            bye;
           "
