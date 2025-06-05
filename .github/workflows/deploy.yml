@@ -52,8 +52,6 @@ jobs:
             echo '=== Starting deployment ===';
             mirror -R -e -v -P 3 \
               --exclude .git/ \
-              --exclude public/ \
-              --exclude src/ \ 
               --exclude .github/ \
               --exclude node_modules/ \
               --exclude .next/cache/ \
