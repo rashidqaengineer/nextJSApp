@@ -35,8 +35,8 @@ jobs:
             open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }};
             
             echo '=== Checking if target directory exists ==='
-            cd /home/thepdtpz/techbiz || cd /home/thepdtpz/techbiz/ || {
-              echo 'Cannot access /home/thepdtpz/techbiz, trying alternatives'
+            cd ${{ secrets.FTP_HOST }} || cd ${{ secrets.FTP_HOST }}/ || {
+              echo 'Cannot access ${{ secrets.FTP_HOST }}, trying alternatives'
               pwd
               ls -la
               cd thepdtpz/techbiz || cd techbiz || exit 1
