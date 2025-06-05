@@ -1,4 +1,4 @@
-name: Deploy to FTP
+name: Deploy Next.js to Custom Host Path
 
 on:
   push:
@@ -11,10 +11,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4
         
       - name: Set up Node.js
-        uses: actions/setup-node@v4  # Updated to v4
+        uses: actions/setup-node@v4
         with:
           node-version: '20.18.3'
           
@@ -26,17 +26,41 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
         
-      - name: Deploy via FTP
+      - name: Check directory and deploy
         run: |
           lftp -c "
             set ssl:verify-certificate no;
             set ftp:ssl-allow no;
+            set net:timeout 30;
             open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }};
-            mirror -R -e -v \
+            
+            echo '=== Checking if target directory exists ==='
+            cd /home/thepdtpz/techbiz || cd /home/thepdtpz/techbiz/ || {
+              echo 'Cannot access /home/thepdtpz/techbiz, trying alternatives'
+              pwd
+              ls -la
+              cd thepdtpz/techbiz || cd techbiz || exit 1
+            }
+            
+            echo '=== Current directory ==='
+            pwd
+            ls -la
+            
+            echo '=== Starting deployment ==='
+            mirror -R -e -v -P 3 \
               --exclude .git/ \
               --exclude .github/ \
               --exclude node_modules/ \
               --exclude .next/cache/ \
-              ./ /public_html/;
+              --exclude .next/trace \
+              --exclude yarn.lock \
+              --exclude package-lock.json \
+              ./ ./;
+            
+            echo '=== Deployment completed, verifying files ==='
+            ls -la
+            echo '=== Checking .next directory ==='
+            ls -la .next/ || echo 'No .next directory found'
+            
             bye
           "
