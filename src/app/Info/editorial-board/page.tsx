@@ -338,7 +338,7 @@ export default function page() {
                       <p className="text-[rgb(11,84,134)] font-normal text-[14px] mt-1">
                         {member.department}
                       </p>
-                      Rashid
+                      Rashid Khan
                     </div>
                   ))}
                 </div>
