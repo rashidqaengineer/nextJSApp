@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: '20.18.3'
           
-      # - name: Install dependencies and build Next.js app
-      #   run: |
-      #     yarn install
-      #     yarn build
+      - name: Install dependencies and build Next.js app
+        run: |
+          yarn install
+          yarn build
           
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
@@ -52,9 +52,11 @@ jobs:
             echo '=== Starting deployment ===';
             mirror -R -e -v -P 3 \
               --exclude .git/ \
+              --exclude public/ \
+              --exclude src/ \ 
               --exclude .github/ \
               --exclude node_modules/ \
-              --exclude .next/ \
+              --exclude .next/cache/ \
               --exclude .next/trace \
               --exclude yarn.lock \
               --exclude package-lock.json \
